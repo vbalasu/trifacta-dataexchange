@@ -1,0 +1,5 @@
+pytest-selenium
+selenium
+chalice
+webdriver-manager
+boto3
