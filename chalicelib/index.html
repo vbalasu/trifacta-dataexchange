@@ -14,7 +14,12 @@
     <h5>Revision</h5>
     <select class="choose-revision w-100"></select>
     <br><br><pre id="revision-id"></pre>
-    </div>
+  </div>
+  <div id="pick-s3-bucket" style="display:none;">
+    <h5>S3 Bucket</h5>
+    <select class="choose-s3-bucket w-100"></select>
+    <br><br><pre id="s3-bucket"></pre>
+  </div>
 </div>
 <script>
   dataset_id = 0
@@ -28,7 +33,9 @@
     $('.choose-dataset').on('select2:select', function (e) {
       dataset_id = e.params.data.id;
       $('#dataset-id').html(dataset_id)
-
+      revision_picker()
+    });
+    function revision_picker() {
       // Show revision picker
       $('#pick-revision').show()
       $('.choose-revision').select2({
@@ -40,9 +47,23 @@
       $('.choose-revision').on('select2:select', function (e) {
         revision_id = e.params.data.id;
         $('#revision-id').html(revision_id)
+        s3_bucket_picker()
       });
-
-    });
+    }
+    function s3_bucket_picker() {
+      $('#pick-s3-bucket').show()
+      $('.choose-s3-bucket').select2({
+        ajax: {
+          url: 'list_s3_buckets',
+          dataType: 'json'
+        }
+      });
+      $('.choose-s3-bucket').on('select2:select', function (e) {
+        s3_bucket = e.params.data.id;
+        $('#s3-bucket').html(s3_bucket)
+        $('#heading').html('Success')
+      });
+    }
   }
   main()
 </script>

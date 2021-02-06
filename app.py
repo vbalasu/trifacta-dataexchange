@@ -21,6 +21,12 @@ def list_revisions(dataset_id, region_name='us-east-1'):
     dx = boto3.client('dataexchange', region_name=region_name)
     return {'results': [{'id': i['Id'], 'text': i['CreatedAt'].isoformat()} for i in dx.list_data_set_revisions(DataSetId=dataset_id)['Revisions']]}
 
+@app.route('/list_s3_buckets')
+def list_s3_buckets(region_name='us-east-1'):
+    import boto3
+    s3 = boto3.client('s3', region_name=region_name)
+    buckets = s3.list_buckets()['Buckets'] 
+    return {'results': [{'id': b['Name'], 'text': b['Name']} for b in buckets]}
 
 @app.route('/favicon.ico')
 def favicon():
