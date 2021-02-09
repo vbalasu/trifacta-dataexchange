@@ -14,7 +14,7 @@ def test_list_datasets():
 
 def test_list_revisions():
   with Client(app) as client:
-    response = client.http.get('/list_revisions/46d55215cf9fc28d71d47ffa563cb948')
+    response = client.http.get('/list_revisions/f988acb30303493f1ee750e7a93f6d33')
     assert response.status_code == 200
 
 def test_list_s3_buckets():
@@ -24,5 +24,5 @@ def test_list_s3_buckets():
 
 def test_runjob_download():
   with Client(app) as client:
-    response = client.http.get('/runjob_download?dataset_id=f988acb30303493f1ee750e7a93f6d33&revision_id=3b985004c81cce01f2cecd515bff9483&bucket_name=awesome-trifacta-bucket')
+    response = client.http.get('/runjob_download?dataset_id=f988acb30303493f1ee750e7a93f6d33&revision_id=3b985004c81cce01f2cecd515bff9483&bucket_name=trifactas3files')
     assert response.status_code == 200
