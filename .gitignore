@@ -2,3 +2,4 @@
 .chalice/venv/
 __pycache__/
 tests/__pycache__/
+.chalice/deployed/

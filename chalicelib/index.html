@@ -19,6 +19,8 @@
     <h5>S3 Bucket</h5>
     <select class="choose-s3-bucket w-100"></select>
     <br><br><pre id="s3-bucket"></pre>
+    <button id="download-to-s3" class="btn btn-primary" disabled>Download to S3</button>
+    <br><br><pre id="result"></pre>
   </div>
 </div>
 <script>
@@ -59,10 +61,16 @@
         }
       });
       $('.choose-s3-bucket').on('select2:select', function (e) {
-        s3_bucket = e.params.data.id;
-        $('#s3-bucket').html(s3_bucket)
-        $('#heading').html('Success')
+        bucket_name = e.params.data.id;
+        $('#s3-bucket').html(bucket_name)
+        $('#download-to-s3').prop('disabled',false)
       });
+      $('#download-to-s3').click(async function () {
+        var url = 'runjob_download?dataset_id='+dataset_id+'&revision_id='+revision_id+'&bucket_name='+bucket_name
+        console.log(url)
+        result = await $.get(url)
+        for(asset of result.assets) $('#result').append('s3://' + asset.Bucket + '/' + asset.Key + '\n')
+      })
     }
   }
   main()

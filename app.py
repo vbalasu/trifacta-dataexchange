@@ -28,6 +28,32 @@ def list_s3_buckets(region_name='us-east-1'):
     buckets = s3.list_buckets()['Buckets'] 
     return {'results': [{'id': b['Name'], 'text': b['Name']} for b in buckets]}
 
+def dx_runjob_download(dataset_id, revision_id, bucket_name, region_name='us-east-1'):
+    import boto3
+    dx = boto3.client('dataexchange', region_name)
+    assets = [{'AssetId':i['Id'], 'Bucket': bucket_name, 'Key': i['Name']} for i in dx.list_revision_assets(DataSetId=dataset_id, RevisionId=revision_id)['Assets']]
+    createjob_response = dx.create_job(
+        Details={
+            'ExportAssetsToS3': {
+                'AssetDestinations': assets,
+                'DataSetId': dataset_id,
+                'RevisionId': revision_id
+            }
+        },
+        Type='EXPORT_ASSETS_TO_S3'
+    )
+    startjob_response = dx.start_job(JobId=createjob_response['Id'])
+    dx_job_id = createjob_response['Id']
+    return {'job_id': dx_job_id, 'assets': assets}
+
+@app.route('/runjob_download')
+def runjob_download(region_name='us-east-1'):
+    params = app.current_request.query_params
+    print(app.current_request.to_dict())
+    result = dx_runjob_download(params['dataset_id'], params['revision_id'], params['bucket_name'], region_name)
+    print(result)
+    return result
+
 @app.route('/favicon.ico')
 def favicon():
     return Response(body='', headers={'Location': 'https://trifactas3files.s3.us-east-1.amazonaws.com/trifacta_logo.ico'}, status_code=301)
