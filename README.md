@@ -1,6 +1,6 @@
 # trifacta-dataexchange
 
-Mini application that allows a user to pick an AWS Data Exchange dataset and revision they have subscribed to. The user can download assets into a specified S3 bucket.
+Application that allows a user to pick an AWS Data Exchange dataset and revision they have subscribed to. The user can download assets into a specified S3 bucket, then wrangle the data using Trifacta.
 
 The solution is available as a deployable package. To deploy it into your own AWS account, install the [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) and [sam cli](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html), then use the following commands:
 ```bash
